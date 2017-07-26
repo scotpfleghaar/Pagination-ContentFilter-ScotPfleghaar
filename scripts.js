@@ -60,13 +60,29 @@ $(document).ready(function () {
 
 
     $(".search").click(function () {
+        //Removes the Class pcked from all items in the student list
         $('.student-list').children().removeClass('picked');
+
+        //Displays all student items to none so that when we evauluate the search results we only
+        //show the results we care about
         $('.student-details').parent().css('display', 'none');
+
+        //Grabs the text from the input
         var txt = $('.searchBox').val();
+
+        //Adds the class picked whenever a the contents of student matches the input box
         $('.student-details:contains("' + txt + '")').parent().css('display', 'block').addClass('picked');
+
+        //Removes previous page numbers that were are the bottom
         $('.pagination').children().remove();
-        var currentStudnets = $('.student-list').find('.picked').length;
-        var total = (Math.ceil(currentStudnets / 10))
+
+        //Gets the new number of studnets 
+        var currentStudents = $('.student-list').find('.picked').length;
+
+        //Creates the pages for the new studnet number
+        var total = (Math.ceil(currentStudents / 10))
+
+        //Sets up the pagniation
         for (let i = 0; i < total; i++) {
             $('.pagination').append('<ul><li><a href="#" class="item">' + (i + 1) + '</a></li></ul> ')
         }
@@ -86,14 +102,14 @@ $(document).ready(function () {
             //Makes Sure that all previus elements are now not being displayed
             $('.picked').css('display', 'none');
 
-            //Here is where the money is! This slices out the div elements based on the 
-            // button number that is clicked, this then displays that section of divs. 
-            //This works great because it really doesn't care how many divs are left 
-            // over, for example, it will display 1 remaining div or nine. 
-            //Also this is what makes it very scalable.
-            $('.picked').slice(((parseInt(number) - 1) * 10), (((parseInt(number) - 1) * 10) + 10)).css("display", "block");
 
+            $('.picked').slice(((parseInt(number) - 1) * 10), (((parseInt(number) - 1) * 10) + 10)).css("display", "block");
         });
+
+        $('.errorMessage').remove();
+        if (currentStudents < 1) {
+            $('.student-list').prepend('<h3 class="errorMessage">No students were found</h3>')
+        }
     });
 
 
